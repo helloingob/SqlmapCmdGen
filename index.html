@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <title>sqlmap cmd generator.</title>
+</head>
+
+<body style="background-color:#70a1ff">
+    <div class="container">
+        <div class="jumbotron">
+            <h1 class="display-4">sqlmap cmd generator.</h1>
+            <p class="lead">inba, 2018</p>
+        </div>
+        <form>
+            <div class="alert alert-primary" role="alert">
+                <a href="https://github.com/sqlmapproject/sqlmap/wiki/Usage#target" class="alert-link">Target:</a>
+            </div>
+            <div class="form-group">
+                <label for="txtUrl">Url</label>
+                <input type="text" class="form-control" id="txtUrl" placeholder="Enter URL">
+            </div>
+            <div class="alert alert-primary" role="alert">
+				<a href="https://github.com/sqlmapproject/sqlmap/wiki/Usage#request" class="alert-link">Request:</a>
+            </div>
+            <div class="form-group">
+                <label for="slcMethod">HTTP method</label>
+                <select class="form-control" id="slcMethod">
+                    <option>GET</option>
+                    <option>POST</option>
+                </select>
+            </div>
+            <div class="form-group" id="grpPostData" style="display: none;">
+                <label for="txtPostData">POST Data</label>
+                <input type="text" class="form-control" id="txtPostData" placeholder="Enter Data to be sent through POST (name=1&pw=1)">
+            </div>
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="chbUserAgent" checked>
+                <label class="form-check-label" for="chbUserAgent">Use randomly selected HTTP User-Agent header value</label>
+            </div>
+            <div class="alert alert-primary" role="alert">
+                <a href="https://github.com/sqlmapproject/sqlmap/wiki/Usage#optimization" class="alert-link">Optimization:</a>
+            </div>
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="chbOptimization" checked>
+                <label class="form-check-label" for="chbOptimization">Turn on all optimization switches</label>
+            </div>
+            <div class="form-group">
+                <label for="txtThreads">Threads</label>
+                <input type="number" class="form-control" id="txtThreads" placeholder="Max number of concurrent HTTP(s) requests (default 1)" value="5">
+            </div>
+            <div class="alert alert-primary" role="alert">
+                <a href="https://github.com/sqlmapproject/sqlmap/wiki/Usage#detection" class="alert-link">Detection:</a>
+            </div>
+            <div class="form-group">
+                <label for="slcLevel">Level of tests to perform (1-5, default 1)</label>
+                <select class="form-control" id="slcLevel">
+                    <option selected>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="slcRisk">Risk of tests to perform (1-3, default 1)</label>
+                <select class="form-control" id="slcRisk">
+                    <option selected>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                </select>
+            </div>
+			<hr class="my-4">
+            <div class="alert alert-primary" role="alert">
+                <a href="https://github.com/sqlmapproject/sqlmap/wiki/Usage#enumeration" class="alert-link">Enumeration:</a>
+            </div>
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="chbAll">
+                <label class="form-check-label" for="chbAll">Retrieve everything</label>
+            </div>
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="chbDumpAll">
+                <label class="form-check-label" for="chbDumpAll">Dump all (databases tables entries)</label>
+            </div>
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="chbDump">
+                <label class="form-check-label" for="chbDump">Dump</label>
+            </div>
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="chbDbs" checked>
+                <label class="form-check-label" for="chbDbs">Enumerate DBMS databases</label>
+            </div>
+            <div class="form-group" id="grpDatabase" style="display: none;">
+                <label for="txtDatabase">DBMS database</label>
+                <input type="text" class="form-control" id="txtDatabase" placeholder="DBMS database name">
+            </div>
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="chbTables" >
+                <label class="form-check-label" for="chbTables">Enumerate DBMS database tables</label>
+            </div>
+            <div class="form-group">
+                <label for="txtTable">Table</label>
+                <input type="text" class="form-control" id="txtTable" placeholder="DBMS table name (If DBMS database name is not specified, the current database name is used)">
+            </div>
+            <div class="alert alert-primary" role="alert">
+				<a href="https://github.com/sqlmapproject/sqlmap/wiki/Usage#output-verbosity" class="alert-link">Output:</a>
+            </div>
+            <div class="form-group">
+                <label for="slcVerbosity">Verbosity</label>
+                <select class="form-control" id="slcVerbosity">
+                    <option label="0: Show only Python tracebacks, error and critical messages.">0</option>
+                    <option label="1: Show also information and warning messages." selected>1</option>
+                    <option label="2: Show also debug messages.">2</option>
+                    <option label="3: Show also payloads injected.">3</option>
+                    <option label="4: Show also HTTP requests.">4</option>
+                    <option label="5: Show also HTTP responses' headers.">5</option>
+                    <option label="6: Show also HTTP responses' page content.">6</option>
+                </select>
+            </div>
+            <div class="jumbotron">
+			    <p class="lead">Generated output:</p>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="txtOutput">
+                </div>
+                <button type="button" id="btnGenerate" onclick="generateCommand()" class="btn btn-primary btn-lg"><i class="fas fa-play"></i></button>
+				<button type="button" id="btnClipboard" onclick="copyToClipboard()" class="btn btn-primary btn-lg"><i class="fas fa-clipboard"></i></button>
+            </div>
+        </form>
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+	
+	<script>
+		$('document').ready(function(){
+		
+			$("#slcMethod").change(function () {
+				if ($("#slcMethod :selected").text() != "GET") {
+					$("#grpPostData").show();
+				} else {
+					$("#grpPostData").hide();
+					$("#txtPostData").val("");
+				}
+			});
+			
+			$("#txtPostData").change(function () {
+				$("#txtPostData").val(function(i, v) {
+					return v.replace(/ /g,"&");
+				});
+			});
+			
+			$("#chbDbs").click(function () {
+				if ($("#chbDbs").is(':checked')) {
+					$("#grpDatabase").hide();
+					$("#txtDatabase").val("");					
+				} else {
+					$("#grpDatabase").show();
+				}
+			});	
+
+		});
+	</script>	
+	<script>
+		function copyToClipboard() {
+			$("#txtOutput").select();
+			document.execCommand("copy");
+		}
+	</script>	
+    <script>
+		function generateCommand() {
+			var command = "";
+			if ($("#txtUrl").val().length > 0) {
+				command = "--url \"" + $("#txtUrl").val() + "\" ";
+				
+				if ($("#slcMethod :selected").text() != "GET") {
+				command += "--method " + $("#slcMethod :selected").text() + " ";
+				}
+				if ($("#txtPostData").val().length > 0) {
+					command += "--data \"" + $("#txtPostData").val() + "\" ";
+				}
+				if ($("#chbUserAgent").is(':checked')) {
+					command += "--random-agent ";
+				}
+				if ($("#chbOptimization").is(':checked')) {
+					command += "-o ";
+				}
+				if ($("#txtThreads :selected").text() != "1") {
+					command += "--threads " + $("#txtThreads").val() + " ";
+				}
+				if ($("#slcLevel :selected").text() != "1") {
+					command += "--level " + $("#slcLevel").val() + " ";
+				}
+				if ($("#slcRisk :selected").text() != "1") {
+					command += "--risk " + $("#slcRisk").val() + " ";
+				}
+				if ($("#chbAll").is(':checked')) {
+					command += "--all ";
+				}
+				if ($("#chbDumpAll").is(':checked')) {
+					command += "--dump-all --exclude-sysdbs ";
+				}
+				if ($("#chbDbs").is(':checked')) {
+					command += "--dbs ";
+				}
+				if ($("#txtDatabase").val().length > 0) {
+					command += "-D \"" + $("#txtDatabase").val() + "\" ";
+				}
+				if ($("#chbTables").is(':checked')) {
+					command += "--tables ";
+				}
+				if ($("#txtTable").val().length > 0) {
+					command += "-T \"" + $("#txtTable").val() + "\" ";
+				}
+
+				if ($("#chbDump").is(':checked')) {
+					command += "--dump ";
+				}
+				if ($("#slcVerbosity :selected").text() != "1") {
+					command += "-v " + $("#slcVerbosity").val() + " ";
+				}
+			} else {
+				$("#txtUrl").first().focus();
+			}
+			$("#txtOutput").val("python sqlmap.py " + command);
+		}
+    </script>	
+</body>
+
+</html>
