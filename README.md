@@ -1,3 +1,3 @@
 # sqlmap cmd generator #
 
-Simple GUI for [sqlmap](http://sqlmap.org/) 
+Simple Command-Line-Generator for [sqlmap](http://sqlmap.org/)

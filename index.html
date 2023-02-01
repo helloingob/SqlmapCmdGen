@@ -1,236 +1,410 @@
 <!doctype html>
 <html lang="en">
-
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
-    <title>sqlmap cmd generator.</title>
-</head>
-
-<body style="background-color:#70a1ff">
-    <div class="container">
-        <div class="jumbotron">
-            <h1 class="display-4">sqlmap cmd generator.</h1>
-            <p class="lead">inba, 2018</p>
-        </div>
-        <form>
-            <div class="alert alert-primary" role="alert">
-                <a href="https://github.com/sqlmapproject/sqlmap/wiki/Usage#target" class="alert-link">Target:</a>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css" integrity="sha256-8M+b2Hj+vy/2J5tZ9pYDHeuPD59KsaEZn1XXj3xVhjg=" crossorigin="anonymous">
+        <title>sqlmap cmd generator.</title>
+    </head>
+    <body style="background-color:#70a1ff">
+        <div class="container">
+            <div class="mt-4 p-5 mb-2 bg-secondary text-white rounded">
+                <h1 class="display-4">sqlmap cmd generator.</h1>
+                <p class="lead">helloingob, 2023</p>
             </div>
-            <div class="form-group">
-                <label for="txtUrl">Url</label>
-                <input type="text" class="form-control" id="txtUrl" placeholder="Enter URL">
-            </div>
-            <div class="alert alert-primary" role="alert">
-				<a href="https://github.com/sqlmapproject/sqlmap/wiki/Usage#request" class="alert-link">Request:</a>
-            </div>
-            <div class="form-group">
-                <label for="slcMethod">HTTP method</label>
-                <select class="form-control" id="slcMethod">
-                    <option>GET</option>
-                    <option>POST</option>
-                </select>
-            </div>
-            <div class="form-group" id="grpPostData" style="display: none;">
-                <label for="txtPostData">POST Data</label>
-                <input type="text" class="form-control" id="txtPostData" placeholder="Enter Data to be sent through POST (name=1&pw=1)">
-            </div>
-            <div class="form-group form-check">
-                <input type="checkbox" class="form-check-input" id="chbUserAgent" checked>
-                <label class="form-check-label" for="chbUserAgent">Use randomly selected HTTP User-Agent header value</label>
-            </div>
-            <div class="alert alert-primary" role="alert">
-                <a href="https://github.com/sqlmapproject/sqlmap/wiki/Usage#optimization" class="alert-link">Optimization:</a>
-            </div>
-            <div class="form-group form-check">
-                <input type="checkbox" class="form-check-input" id="chbOptimization" checked>
-                <label class="form-check-label" for="chbOptimization">Turn on all optimization switches</label>
-            </div>
-            <div class="form-group">
-                <label for="txtThreads">Threads</label>
-                <input type="number" class="form-control" id="txtThreads" placeholder="Max number of concurrent HTTP(s) requests (default 1)" value="5">
-            </div>
-            <div class="alert alert-primary" role="alert">
-                <a href="https://github.com/sqlmapproject/sqlmap/wiki/Usage#detection" class="alert-link">Detection:</a>
-            </div>
-            <div class="form-group">
-                <label for="slcLevel">Level of tests to perform (1-5, default 1)</label>
-                <select class="form-control" id="slcLevel">
-                    <option selected>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="slcRisk">Risk of tests to perform (1-3, default 1)</label>
-                <select class="form-control" id="slcRisk">
-                    <option selected>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                </select>
-            </div>
-			<hr class="my-4">
-            <div class="alert alert-primary" role="alert">
-                <a href="https://github.com/sqlmapproject/sqlmap/wiki/Usage#enumeration" class="alert-link">Enumeration:</a>
-            </div>
-            <div class="form-group form-check">
-                <input type="checkbox" class="form-check-input" id="chbAll">
-                <label class="form-check-label" for="chbAll">Retrieve everything</label>
-            </div>
-            <div class="form-group form-check">
-                <input type="checkbox" class="form-check-input" id="chbDumpAll">
-                <label class="form-check-label" for="chbDumpAll">Dump all (databases tables entries)</label>
-            </div>
-            <div class="form-group form-check">
-                <input type="checkbox" class="form-check-input" id="chbDump">
-                <label class="form-check-label" for="chbDump">Dump</label>
-            </div>
-            <div class="form-group form-check">
-                <input type="checkbox" class="form-check-input" id="chbDbs" checked>
-                <label class="form-check-label" for="chbDbs">Enumerate DBMS databases</label>
-            </div>
-            <div class="form-group" id="grpDatabase" style="display: none;">
-                <label for="txtDatabase">DBMS database</label>
-                <input type="text" class="form-control" id="txtDatabase" placeholder="DBMS database name">
-            </div>
-            <div class="form-group form-check">
-                <input type="checkbox" class="form-check-input" id="chbTables" >
-                <label class="form-check-label" for="chbTables">Enumerate DBMS database tables</label>
-            </div>
-            <div class="form-group">
-                <label for="txtTable">Table</label>
-                <input type="text" class="form-control" id="txtTable" placeholder="DBMS table name (If DBMS database name is not specified, the current database name is used)">
-            </div>
-            <div class="alert alert-primary" role="alert">
-				<a href="https://github.com/sqlmapproject/sqlmap/wiki/Usage#output-verbosity" class="alert-link">Output:</a>
-            </div>
-            <div class="form-group">
-                <label for="slcVerbosity">Verbosity</label>
-                <select class="form-control" id="slcVerbosity">
-                    <option label="0: Show only Python tracebacks, error and critical messages.">0</option>
-                    <option label="1: Show also information and warning messages." selected>1</option>
-                    <option label="2: Show also debug messages.">2</option>
-                    <option label="3: Show also payloads injected.">3</option>
-                    <option label="4: Show also HTTP requests.">4</option>
-                    <option label="5: Show also HTTP responses' headers.">5</option>
-                    <option label="6: Show also HTTP responses' page content.">6</option>
-                </select>
-            </div>
-            <div class="jumbotron">
-			    <p class="lead">Generated output:</p>
-                <div class="form-group">
-                    <input type="text" class="form-control" id="txtOutput">
+            <form>
+                <div class="alert alert-primary" role="alert">
+                    <a href="https://github.com/sqlmapproject/sqlmap/wiki/Usage#target" class="alert-link">Target</a>
                 </div>
-                <button type="button" id="btnGenerate" onclick="generateCommand()" class="btn btn-primary btn-lg"><i class="fas fa-play"></i></button>
-				<button type="button" id="btnClipboard" onclick="copyToClipboard()" class="btn btn-primary btn-lg"><i class="fas fa-clipboard"></i></button>
-            </div>
-        </form>
-    </div>
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-	
-	<script>
-		$('document').ready(function(){
-		
-			$("#slcMethod").change(function () {
-				if ($("#slcMethod :selected").text() != "GET") {
-					$("#grpPostData").show();
-				} else {
-					$("#grpPostData").hide();
-					$("#txtPostData").val("");
-				}
-			});
-			
-			$("#txtPostData").change(function () {
-				$("#txtPostData").val(function(i, v) {
-					return v.replace(/ /g,"&");
-				});
-			});
-			
-			$("#chbDbs").click(function () {
-				if ($("#chbDbs").is(':checked')) {
-					$("#grpDatabase").hide();
-					$("#txtDatabase").val("");					
-				} else {
-					$("#grpDatabase").show();
-				}
-			});	
+                <div class="form-group mb-2">
+                    <label for="txtUrl">Url</label>
+                    <input type="text" class="form-control" id="txtUrl" placeholder="Enter URL">
+                </div>
+                <div class="alert alert-primary" role="alert">
+                    <a href="https://github.com/sqlmapproject/sqlmap/wiki/Usage#request" class="alert-link">Request</a>
+                </div>
+                <div class="form-group mb-2">
+                    <label for="slcMethod">HTTP method</label>
+                    <select class="form-control" id="slcMethod">
+                        <option>GET</option>
+                        <option>POST</option>
+                    </select>
+                </div>
+                <div class="form-group mb-2" id="grpPostData" style="display: none;">
+                    <label for="txtPostData">POST Data</label>
+                    <input type="text" class="form-control" id="txtPostData" placeholder="Enter Data to be sent through POST (name=1&pw=1)">
+                </div>            
+                <div class="alert alert-primary" role="alert">
+                    <a href="https://github.com/sqlmapproject/sqlmap/wiki/Usage#detection" class="alert-link">Detection</a>
+                </div>
+                <div class="form-group">
+                    <label for="slcLevel"><a href="https://github.com/sqlmapproject/sqlmap/wiki/Usage#level" class="text-dark">Level of tests to perform</a></label>
+                    <select class="form-control" id="slcLevel">
+                        <option selected>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                    </select>
+                </div>
+                <div class="form-group mb-2">
+                    <label for="slcRisk"><a href="https://github.com/sqlmapproject/sqlmap/wiki/Usage#risk" class="text-dark">Risk of tests to perform</a></label>
+                    <select class="form-control" id="slcRisk">
+                        <option selected>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                    </select>
+                </div>
+                <div class="alert alert-primary" role="alert">
+                    <a href="https://github.com/sqlmapproject/sqlmap/wiki/Usage#techniques" class="alert-link">Techniques</a>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="chbxBooleanBased" checked>
+                  <label class="form-check-label" for="chbxBooleanBased">
+                    Boolean-based blind
+                   </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="chbxErrorBased" checked>
+                  <label class="form-check-label" for="chbxErrorBased">
+                    Error-based
+                   </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="chbxUnionBased" checked>
+                  <label class="form-check-label" for="chbxUnionBased">
+                    Union query-based
+                   </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="chbxStacked" checked>
+                  <label class="form-check-label" for="chbxBooleanBased">
+                    Stacked queries
+                   </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="chbxTimeBased" checked>
+                  <label class="form-check-label" for="chbxBooleanBased">
+                    Time-based blind
+                   </label>
+                </div>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" value="" id="chbxInline" checked>
+                  <label class="form-check-label" for="chbxBooleanBased">
+                    Inline queries
+                   </label>
+                </div>
+                <div class="alert alert-primary" role="alert">
+                    <a href="https://github.com/sqlmapproject/sqlmap/wiki/Usage#enumeration" class="alert-link">Enumeration</a>
+                </div>
+                <div class="form-group form-check mb-2">
+                    <input type="checkbox" class="form-check-input" id="chbxAll">
+                    <label class="form-check-label" for="chbxAll">Retrieve everything (<i>not recommended</i>)</label>
+                </div>
+                <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input" id="chbxBanner">
+                    <label class="form-check-label" for="chbxBanner">Retrieve database name & version</label>
+                </div>
+                <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input" id="chbxDatabases">
+                    <label class="form-check-label" for="chbxDatabases">Get all database names</label>
+                </div>
+                <div class="form-group form-check mb-2">
+                    <input type="checkbox" class="form-check-input" id="chbxTables">
+                    <label class="form-check-label" for="chbxTables">Get all table names</label>
+                </div>
+                <div id="grpTables" style="display: none;">
+                    <div class="form-group mb-2">
+                        <label for="txtTablesDatabase">Database name</label>
+                        <input type="text" class="form-control" id="txtTablesDatabase" placeholder="Enter specific database name (empty is current database)"/>
+                    </div>
+                </div>
+                <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input" id="chbxSingleTable">
+                    <label class="form-check-label" for="chbxTables">Get single table content</label>
+                </div>
+                <div id="grpSingleTable" style="display: none;">
+                    <div class="form-group mb-2">
+                        <label for="txtSingleTableName">Database name</label>
+                        <input type="text" class="form-control" id="txtSingleTableName" placeholder="Enter table name"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtSingleTableDatabase">Database name</label>
+                        <input type="text" class="form-control" id="txtSingleTableDatabase" placeholder="Enter specific database name (empty is current database)"/>
+                    </div>
+                </div>
+                <div class="form-group form-check mb-2">
+                    <input type="checkbox" class="form-check-input" id="chbxAllTablesFromDatabase">
+                    <label class="form-check-label" for="chbxAllTablesFromDatabase">Get all tables content from database</label>
+                </div>
+                <div id="grpAllTables" style="display: none;">
+                    <div class="form-group mb-2">
+                        <label for="txtAllTablesDatabase">Database name</label>
+                        <input type="text" class="form-control" id="txtAllTablesDatabase" placeholder="Enter specific database name (emtpy are all databases)"/>
+                    </div>
+                </div>
+                <div class="alert alert-primary" role="alert">
+                    <b>Miscellaneous</b>
+                </div>
+                <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input" id="chbxOptimization" checked>
+                    <label class="form-check-label" for="chbxOptimization">Turn on all optimization switches</label>
+                </div>
+                <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input" id="chbxUserAgent" checked>
+                    <label class="form-check-label" for="chbxUserAgent">Use randomly selected HTTP User-Agent header value</label>
+                </div>  
+                <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input" id="chbxBatchmode">
+                    <label class="form-check-label" for="chbxBatchmode">Turn on batchmode. All user's input will be default behavior</label>
+                </div>
+                <div class="form-group">
+                    <label for="txtThreads"><a href="https://github.com/sqlmapproject/sqlmap/wiki/Usage#concurrent-https-requests" class="text-dark">Threads</a></label>
+                    <input type="number" class="form-control" id="txtThreads" placeholder="Max number of concurrent HTTP(s) requests (default 1)" value="5">
+                </div>
+                <div class="form-group">
+                    <label for="txtPostData"><a href="https://github.com/sqlmapproject/sqlmap/wiki/Usage#http-cookie-header" class="text-dark">Cookie</a></label>
+                    <input type="text" class="form-control" id="txtCookie" placeholder="Enter cookie, e.g parameter1=value;parameter2=value">
+                </div>
+                <div class="form-group">
+                    <label for="slcVerbosity"><a href="https://github.com/sqlmapproject/sqlmap/wiki/Usage#output-verbosity" class="text-dark">Verbosity</a></label>
+                    <select class="form-control" id="slcVerbosity">
+                        <option label="0: Show only Python tracebacks, error and critical messages.">0</option>
+                        <option label="1: Show also information and warning messages." selected>1</option>
+                        <option label="2: Show also debug messages.">2</option>
+                        <option label="3: Show also payloads injected.">3</option>
+                        <option label="4: Show also HTTP requests.">4</option>
+                        <option label="5: Show also HTTP responses' headers.">5</option>
+                        <option label="6: Show also HTTP responses' page content.">6</option>
+                    </select>
+                </div>
+                <div class="mt-4 p-5 bg-secondary text-white rounded">
+                    <p class="lead">Generated output:</p>
+                    <div class="form-group mb-2">
+                        <input type="text" class="form-control" id="txtOutput">
+                    </div>
+                    <button type="button" id="btnGenerate" onclick="generateCommand()" class="btn btn-primary btn-lg">
+                        <i class="bi bi-caret-right-fill"></i>
+                    </button>
+                    <button type="button" id="btnClipboard" onclick="copyToClipboard()" class="btn btn-primary btn-lg">
+                        <i class="bi bi-clipboard"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+        <script>
+            $('document').ready(function(){
+            
+                $("#slcMethod").change(function () {
+                    if ($("#slcMethod :selected").text() != "GET") {
+                        $("#grpPostData").show();
+                    } else {
+                        $("#grpPostData").hide();
+                        $("#txtPostData").val("");
+                    }
+                });
 
-		});
-	</script>	
-	<script>
-		function copyToClipboard() {
-			$("#txtOutput").select();
-			document.execCommand("copy");
-		}
-	</script>	
-    <script>
-		function generateCommand() {
-			var command = "";
-			if ($("#txtUrl").val().length > 0) {
-				command = "--url \"" + $("#txtUrl").val() + "\" ";
-				
-				if ($("#slcMethod :selected").text() != "GET") {
-				command += "--method " + $("#slcMethod :selected").text() + " ";
-				}
-				if ($("#txtPostData").val().length > 0) {
-					command += "--data \"" + $("#txtPostData").val() + "\" ";
-				}
-				if ($("#chbUserAgent").is(':checked')) {
-					command += "--random-agent ";
-				}
-				if ($("#chbOptimization").is(':checked')) {
-					command += "-o ";
-				}
-				if ($("#txtThreads :selected").text() != "1") {
-					command += "--threads " + $("#txtThreads").val() + " ";
-				}
-				if ($("#slcLevel :selected").text() != "1") {
-					command += "--level " + $("#slcLevel").val() + " ";
-				}
-				if ($("#slcRisk :selected").text() != "1") {
-					command += "--risk " + $("#slcRisk").val() + " ";
-				}
-				if ($("#chbAll").is(':checked')) {
-					command += "--all ";
-				}
-				if ($("#chbDumpAll").is(':checked')) {
-					command += "--dump-all --exclude-sysdbs ";
-				}
-				if ($("#chbDbs").is(':checked')) {
-					command += "--dbs ";
-				}
-				if ($("#txtDatabase").val().length > 0) {
-					command += "-D \"" + $("#txtDatabase").val() + "\" ";
-				}
-				if ($("#chbTables").is(':checked')) {
-					command += "--tables ";
-				}
-				if ($("#txtTable").val().length > 0) {
-					command += "-T \"" + $("#txtTable").val() + "\" ";
-				}
+                $("#txtPostData").change(function () {
+                    $("#txtPostData").val(function(i, v) {
+                        return v.replace(/ /g,"&");
+                    });
+                });
+                
+                $("#chbxAll").click(function () {
+                    if ($("#chbxAll").is(':checked')) {
+                        $("#chbxBanner").prop( "checked", false );
+                        $("#chbxDatabases").prop( "checked", false );
+                        $("#chbxTables").prop( "checked", false );
+                        $("#grpTables").hide();
+                        $("#txtTablesDatabase").val("");
+                        $("#chbxSingleTable").prop( "checked", false );
+                        $("#grpSingleTable").hide();
+                        $("#txtSingleTableDatabase").val("");
+                        $("#chbxAllTablesFromDatabase").prop( "checked", false );
+                        $("#grpAllTables").hide();
+                        $("#txtAllTablesDatabase").val("");
+                    }
+                }); 
+                
+                $("#chbxBanner").click(function () {
+                    if ($("#chbxBanner").is(':checked')) {
+                        $("#chbxAll").prop( "checked", false );
+                    }
+                });
+                $("#chbxDatabases").click(function () {
+                    if ($("#chbxDatabases").is(':checked')) {
+                        $("#chbxAll").prop( "checked", false );
+                    }
+                });
+                $("#chbxTables").click(function () {
+                    if ($("#chbxTables").is(':checked')) {
+                        $("#chbxAll").prop( "checked", false );
+                    }
+                });
+                $("#chbxSingleTable").click(function () {
+                    if ($("#chbxSingleTable").is(':checked')) {
+                        $("#chbxAll").prop( "checked", false );
+                    }
+                });
+                $("#chbxAllTablesFromDatabase").click(function () {
+                    if ($("#chbxAllTablesFromDatabase").is(':checked')) {
+                        $("#chbxAll").prop( "checked", false );
+                    }
+                });
 
-				if ($("#chbDump").is(':checked')) {
-					command += "--dump ";
-				}
-				if ($("#slcVerbosity :selected").text() != "1") {
-					command += "-v " + $("#slcVerbosity").val() + " ";
-				}
-			} else {
-				$("#txtUrl").first().focus();
-			}
-			$("#txtOutput").val("python sqlmap.py " + command);
-		}
-    </script>	
-</body>
+                $("#chbxTables").click(function () {
+                    if ($("#chbxTables").is(':checked')) {
+                        $("#grpTables").show();
+                    } else {
+                        $("#grpTables").hide();
+                        $("#txtTablesDatabase").val("");
+                    }
+                }); 
 
+                $("#chbxSingleTable").click(function () {
+                    if ($("#chbxSingleTable").is(':checked')) {
+                        $("#grpSingleTable").show();
+                        $("#chbxAllTablesFromDatabase").prop( "checked", false );
+                        $("#txtAllTablesDatabase").val("");
+                        $("#grpAllTables").hide();
+                    } else {
+                        $("#grpSingleTable").hide();
+                        $("#txtSingleTableDatabase").val("");
+                    }
+                });
+
+                $("#chbxAllTablesFromDatabase").click(function () {
+                    if ($("#chbxAllTablesFromDatabase").is(':checked')) {
+                        $("#grpAllTables").show();
+                        $("#chbxSingleTable").prop( "checked", false );
+                        $("#txtSingleTableDatabase").val("");
+                        $("#grpSingleTable").hide();
+                    } else {
+                        $("#grpAllTables").hide();
+                        $("#txtAllTablesDatabase").val("");
+                    }
+                }); 
+
+            });
+        </script>    
+        <script>
+            function copyToClipboard() {
+                $("#txtOutput").select();
+                document.execCommand("copy");
+            }
+        </script>    
+        <script>
+            function generateCommand() {
+                var command = "";
+                if ($("#txtUrl").val().length > 0) {
+                    command = "--url \"" + $("#txtUrl").val() + "\" ";
+                } else {
+                    $("#txtUrl").first().focus();
+                    $("#txtOutput").val("Enter url");
+                    return;
+                }
+                if ($("#slcMethod :selected").text() != "GET") {
+                    command += "--method " + $("#slcMethod :selected").text() + " ";
+                    if ($("#txtPostData").val().length > 0) {
+                        command += "--data \"" + $("#txtPostData").val() + "\" ";
+                    } else {
+                        $("#txtPostData").first().focus();
+                        $("#txtOutput").val("Enter post data");
+                        return;
+                    }
+                }
+                if ($("#slcLevel :selected").text() != "1") {
+                    command += "--level " + $("#slcLevel").val() + " ";
+                }
+                if ($("#slcRisk :selected").text() != "1") {
+                    command += "--risk " + $("#slcRisk").val() + " ";
+                }
+                if ($("#chbxBooleanBased").is(':checked') && $("#chbxErrorBased").is(':checked') && $("#chbxUnionBased").is(':checked') && $("#chbxStacked").is(':checked') && $("#chbxTimeBased").is(':checked') && $("#chbxInline").is(':checked') ) {
+                    //command += "--technique BEUSTQ ";
+                } else {
+                    command += "--technique ";
+                    if ($("#chbxBooleanBased").is(':checked')) {
+                        command += "B";
+                    }
+                    if ($("#chbxErrorBased").is(':checked')) {
+                        command += "E";
+                    }
+                    if ($("#chbxUnionBased").is(':checked')) {
+                        command += "U";
+                    }
+                    if ($("#chbxStacked").is(':checked')) {
+                        command += "S";
+                    }
+                    if ($("#chbxTimeBased").is(':checked')) {
+                        command += "T";
+                    }
+                    if ($("#chbxInline").is(':checked')) {
+                        command += "Q";
+                    }
+                    command += " ";
+                }
+                    
+                if ($("#chbxAll").is(':checked')) {
+                    command += "--all ";
+                } else {
+                    if ($("#chbxBanner").is(':checked')) {
+                        command += "--banner ";
+                    }
+                    if ($("#chbxDatabases").is(':checked')) {
+                        command += "--dbs ";
+                    }
+                    if ($("#chbxTables").is(':checked')) {
+                        command += "--tables --exclude-sysdbs ";
+                        if ($("#txtTablesDatabase").val().length > 0) {
+                            command += "-D \"" + $("#txtTablesDatabase").val() + "\" ";
+                        }
+                    }
+                    if ($("#chbxSingleTable").is(':checked')) {
+                        command += "--dump ";
+                        if ($("#txtSingleTableName").val().length > 0) {
+                            command += "-T \"" + $("#txtSingleTableName").val() + "\" ";
+                        } else {
+                            $("#txtSingleTableName").first().focus();
+                            $("#txtOutput").val("Enter name of table to dump");
+                            return;
+                        }
+                        if ($("#txtTablesDatabase").val().length > 0) {
+                            command += "-D \"" + $("#txtTablesDatabase").val() + "\" ";
+                        }
+                    }
+                    if ($("#chbxAllTablesFromDatabase").is(':checked')) {
+                        if ($("#txtAllTablesDatabase").val().length > 0) {
+                            command += "--dump -D \"" + $("#txtSingleTableName").val() + "\" ";
+                        } else {
+                            command += "--dump-all --exclude-sysdbs ";
+                        }
+                    }
+                }
+                if ($("#chbxUserAgent").is(':checked')) {
+                    command += "--random-agent ";
+                }
+                if ($("#chbxOptimization").is(':checked')) {
+                    command += "-o ";
+                }
+                if ($("#chbxBatchmode").is(':checked')) {
+                    command += "--batch ";
+                }
+                if ($("#txtThreads :selected").text() != "1") {
+                    command += "--threads " + $("#txtThreads").val() + " ";
+                }
+                if ($("#txtCookie").val().length > 0) {
+                    command += "--cookie \"" + $("#txtCookie").val() + "\" ";
+                }
+                if ($("#slcVerbosity :selected").text() != "1") {
+                    command += "-v " + $("#slcVerbosity").val() + " ";
+                }
+                
+                $("#txtOutput").val("sqlmap " + command);
+            }
+        </script>
+    </body>
 </html>
